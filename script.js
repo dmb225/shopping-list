@@ -30,15 +30,15 @@ function addItem(e) {
 
 function removeItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
-    if (confirm('Are you want to remove this item')) {
+    if (confirm('Are you sure want to remove this item')) {
       e.target.parentElement.parentElement.remove();
       cleanUI();
     }
   }
 }
 
-function removeAllItems(e) {
-  if (confirm('Are you want to remove all items')) {
+function removeAllItems() {
+  if (confirm('Are you sure want to remove all items')) {
     while (itemList.firstChild) {
       itemList.removeChild(itemList.firstChild);
     }
