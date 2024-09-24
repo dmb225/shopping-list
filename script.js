@@ -46,6 +46,20 @@ function removeAllItems() {
   }
 }
 
+function filterItems(e) {
+  const text = e.target.value.toLowerCase();
+  const items = itemList.querySelectorAll('li');
+
+  items.forEach(item => {
+    const itemName = item.firstChild.textContent.toLocaleLowerCase();
+    if (itemName.indexOf(text) != -1) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
 function cleanUI() {
   const items = itemList.querySelectorAll('li');
   if (items.length === 0) {
@@ -75,5 +89,6 @@ function createIcon(classes) {
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', removeAllItems);
+itemFilter.addEventListener('input', filterItems);
 
 cleanUI();
