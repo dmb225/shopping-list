@@ -31,13 +31,24 @@ function onAddItemSubmit(e) {
   cleanUI();
 }
 
-function removeItem(e) {
+function onClickItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
-    if (confirm('Are you sure want to remove this item')) {
-      e.target.parentElement.parentElement.remove();
-      cleanUI();
-    }
+    removeItem(e.target.parentElement.parentElement);
   }
+}
+
+function removeItem(item) {
+  if (confirm('Are you sure want to remove this item')) {
+    item.remove();
+    removeItemFromStorage(item.textContent);
+    cleanUI();
+  }
+}
+
+function removeItemFromStorage(item) {
+  let itemsFromStorage = getItemsFromStorage().filter(i => i !== item);
+  console.log(itemsFromStorage);
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function removeAllItems() {
@@ -45,6 +56,9 @@ function removeAllItems() {
     while (itemList.firstChild) {
       itemList.removeChild(itemList.firstChild);
     }
+
+    localStorage.removeItem('items');
+
     cleanUI();
   }
 }
@@ -117,7 +131,7 @@ function createIcon(classes) {
 
 function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
-  itemList.addEventListener('click', removeItem);
+  itemList.addEventListener('click', onClickItem);
   clearBtn.addEventListener('click', removeAllItems);
   itemFilter.addEventListener('input', filterItems);
   document.addEventListener('DOMContentLoaded', displayItems);
