@@ -2,6 +2,8 @@ const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
+const itemFilter = document.getElementById('filter');
+
 
 function addItem(e) {
   // prevent the browser to submit the form to the server
@@ -14,7 +16,7 @@ function addItem(e) {
     return;
   }
 
-  // create list item
+  // create & add list item
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(item));
   li.appendChild(createButton('remove-item btn-link text-red'));
@@ -22,17 +24,36 @@ function addItem(e) {
 
   // clean input
   itemInput.value = '';
+
+  cleanUI();
 }
 
 function removeItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
-    e.target.parentElement.parentElement.remove();
+    if (confirm('Are you want to remove this item')) {
+      e.target.parentElement.parentElement.remove();
+      cleanUI();
+    }
   }
 }
 
 function removeAllItems(e) {
-  while (itemList.firstChild) {
-    itemList.removeChild(itemList.firstChild);
+  if (confirm('Are you want to remove all items')) {
+    while (itemList.firstChild) {
+      itemList.removeChild(itemList.firstChild);
+    }
+    cleanUI();
+  }
+}
+
+function cleanUI() {
+  const items = itemList.querySelectorAll('li');
+  if (items.length === 0) {
+    clearBtn.style.display = 'none';
+    itemFilter.style.display = 'none';
+  } else {
+    clearBtn.style.display = 'block';
+    itemFilter.style.display = 'block';
   }
 }
 
@@ -54,3 +75,5 @@ function createIcon(classes) {
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', removeAllItems);
+
+cleanUI();
