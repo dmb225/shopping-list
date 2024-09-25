@@ -31,15 +31,17 @@ function onAddItemSubmit(e) {
     itemToEdit.remove('edit-mode');
     itemToEdit.remove();
     isEditMode = false;
+  } else {
+    if (doesItemExist(item)) {
+      alert("This item already exists!");
+      return;
+    }
   }
 
-  if (doesItemExist(item)) {
-    alert("This item already exists!");
-    return;
+  if (!doesItemExist(item)) {
+    addItemToDOM(item);
+    addItemToStorage(item);
   }
-
-  addItemToDOM(item);
-  addItemToStorage(item);
 
   cleanUI();
 }
@@ -121,7 +123,7 @@ function cleanUI() {
   isEditMode = false;
   itemInput.value = '';
   formBtn.innerHTML = '<i class="fa-solid da-plus"></i> Add Item';
-  formBtn.backgroundColor = '#333';
+  formBtn.style.backgroundColor = '#000';
 }
 
 function addItemToDOM(item) {
