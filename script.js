@@ -33,6 +33,11 @@ function onAddItemSubmit(e) {
     isEditMode = false;
   }
 
+  if (doesItemExist(item)) {
+    alert("This item already exists!");
+    return;
+  }
+
   addItemToDOM(item);
   addItemToStorage(item);
 
@@ -45,6 +50,12 @@ function onClickItem(e) {
   } else {
     setItemToEdit(e.target);
   }
+}
+
+function doesItemExist(item) {
+  const itemsFromStorage = getItemsFromStorage();
+
+  return itemsFromStorage.includes(item);
 }
 
 function setItemToEdit(item) {
@@ -68,7 +79,6 @@ function removeItem(item) {
 
 function removeItemFromStorage(item) {
   let itemsFromStorage = getItemsFromStorage().filter(i => i !== item);
-  console.log(itemsFromStorage);
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
